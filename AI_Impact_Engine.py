@@ -25,7 +25,6 @@ st.markdown("""
         border: 1px solid #E6E9EF;
         box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         height: 100%;
-        margin-bottom: 20px;
     }
     div[data-testid="stForm"] { border: none; background: transparent; padding: 0; }
     .stButton>button {
