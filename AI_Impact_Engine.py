@@ -53,7 +53,6 @@ with st.form("roi_input_form"):
         country = st.selectbox("Country", ["USA", "UK", "Germany", "Canada", "India"])
         company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
         revenue = st.number_input("Annual Revenue (USD Millions)", min_value=0.0, value=150.0)
-        failure_rate = st.slider("AI Project Failure Rate (%)", 0.0, 100.0, 15.0)
         inv_per_emp = st.number_input("AI Investment Per Employee (USD)", value=1200)
         
     with col2:
@@ -61,12 +60,14 @@ with st.form("roi_input_form"):
         adoption_stage = st.selectbox("AI Adoption Stage", ["none", "pilot", "partial", "full"])
         years_ai = st.number_input("Years Using AI", min_value=0.0, value=3.0)
         maturity = st.slider("AI Maturity Score (0-100)", 0, 100, 60)
+        failure_rate = st.slider("AI Project Failure Rate (%)", 0.0, 100.0, 15.0)
 
     with col3:
         primary_tool = st.selectbox("AI Primary Tool", ["ChatGPT", "Claude", "Gemini", "Custom"])
         num_tools = st.number_input("Num AI Tools Used", min_value=1, value=8)
         active_projects = st.number_input("AI Projects Active", min_value=0, value=5)
         budget = st.slider("AI Budget Percentage (%)", 0.0, 100.0, 12.5)
+        st.write("")
         
 
     predict_btn = st.form_submit_button("Generate Prediction & Analysis")
