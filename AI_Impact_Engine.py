@@ -117,19 +117,6 @@ if predict_btn:
 
         with result_col2:
             st.markdown("<div class='result-card'>", unsafe_allow_html=True)
-            st.subheader("Calculated ROI Projection")
-            st.metric("Predicted Corporate ROI", f"{roi_prediction:.2%}")
-            
-            # Financial breakdown
-            total_cost = revenue * (budget / 100)
-            net_gain = total_cost * roi_prediction
-            st.write(f"**Estimated AI Investment:** ${total_cost:.2f}M")
-            st.write(f"**Predicted Net Gain:** ${net_gain:.2f}M")
-            st.markdown("</div>", unsafe_allow_html=True)
-
-
-
- st.markdown("<div class='result-card'>", unsafe_allow_html=True)
             st.subheader("Company Health Check")
             
             # Simple Maturity Chart
