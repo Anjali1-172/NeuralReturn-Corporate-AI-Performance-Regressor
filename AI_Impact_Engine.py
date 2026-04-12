@@ -53,6 +53,8 @@ with st.form("roi_input_form"):
         country = st.selectbox("Country", ["USA", "UK", "Germany", "Canada", "India"])
         company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
         revenue = st.number_input("Annual Revenue (USD Millions)", min_value=0.0, value=150.0)
+        failure_rate = st.slider("AI Project Failure Rate (%)", 0.0, 100.0, 15.0)
+        inv_per_emp = st.number_input("AI Investment Per Employee (USD)", value=1200)
         
     with col2:
         adoption_rate = st.slider("AI Adoption Rate (%)", 0, 100, 45)
@@ -63,11 +65,9 @@ with st.form("roi_input_form"):
     with col3:
         primary_tool = st.selectbox("AI Primary Tool", ["ChatGPT", "Claude", "Gemini", "Custom"])
         num_tools = st.number_input("Num AI Tools Used", min_value=1, value=8)
-        # --- FIXED: ADDED MISSING COLUMN BELOW ---
         active_projects = st.number_input("AI Projects Active", min_value=0, value=5)
         budget = st.slider("AI Budget Percentage (%)", 0.0, 100.0, 12.5)
-        failure_rate = st.slider("AI Project Failure Rate (%)", 0.0, 100.0, 15.0)
-        inv_per_emp = st.number_input("AI Investment Per Employee (USD)", value=1200)
+        
 
     predict_btn = st.form_submit_button("Generate Prediction & Analysis")
 
@@ -99,9 +99,9 @@ if predict_btn:
         roi_prediction = model.predict(input_df)[0]
         
         # Display Columns
-        res_col1, res_col2 = st.columns(2)
+        result_col1, result_col2 = st.columns(2)
 
-        with res_col1:
+        with result_col1:
             st.markdown("<div class='result-card'>", unsafe_allow_html=True)
             st.subheader("Calculated ROI Projection")
             st.metric("Predicted Corporate ROI", f"{roi_prediction:.2%}")
@@ -113,7 +113,7 @@ if predict_btn:
             st.write(f"**Predicted Net Gain:** ${net_gain:.2f}M")
             st.markdown("</div>", unsafe_allow_html=True)
 
-        with res_col2:
+        with result_col2:
             st.markdown("<div class='result-card'>", unsafe_allow_html=True)
             st.subheader("Company Health Check")
             
