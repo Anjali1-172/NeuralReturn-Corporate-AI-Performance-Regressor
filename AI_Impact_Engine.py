@@ -100,46 +100,40 @@ if predict_btn:
         roi_prediction = model.predict(input_df)[0]
         
         # Display Columns
-        result_col1, result_col2 = st.columns(3)
+        result_col1, result_col2 = st.columns(2)
 
         with result_col1:
-            st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+            st.markdown("<div class='result-card' style='min-height: 400px;'>", unsafe_allow_html=True)
             st.subheader("Calculated ROI Projection")
             st.metric("Predicted Corporate ROI", f"{roi_prediction:.2%}")
             
-            # Financial breakdown
             total_cost = revenue * (budget / 100)
             net_gain = total_cost * roi_prediction
             st.write(f"**Estimated AI Investment:** ${total_cost:.2f}M")
             st.write(f"**Predicted Net Gain:** ${net_gain:.2f}M")
             st.markdown("</div>", unsafe_allow_html=True)
+            
 
         with result_col2:
-            st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+            st.markdown("<div class='result-card' style='min-height: 400px;'>", unsafe_allow_html=True)
             st.subheader("Company Health Check")
             
-            # Simple Maturity Chart
             comparison_data = pd.DataFrame({
                 'Metric': ['Your Maturity', 'Industry Avg'],
                 'Score': [maturity, 52]
             }).set_index('Metric')
             st.bar_chart(comparison_data)
             
-            # Status Indicators
+            # Use columns inside the card to keep status icons tight
             if failure_rate > 25:
-                st.error("⚠️ High Risk: Failure rate is above industry standard.")
+                st.error("⚠️ High Risk: Failure rate is high.")
             else:
-                st.success("✅ Operational Health: Failure rate is within safe limits.")
+                st.success("✅ Operational Health: Safe.")
                 
-            if maturity > 70:
-                st.info("🏆 Status: AI Leader")
-            else:
-                st.info("📈 Status: Growing Adoption")
+            st.info("🏆 Status: AI Leader" if maturity > 70 else "📈 Status: Growing Adoption")
             st.markdown("</div>", unsafe_allow_html=True)
             
     except Exception as e:
         st.error(f"Prediction Error: {e}")
-        st.write("Current columns being sent to model:", list(input_df.columns))
 
-
-   
+            
