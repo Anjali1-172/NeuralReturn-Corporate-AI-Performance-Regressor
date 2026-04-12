@@ -100,7 +100,7 @@ if predict_btn:
         roi_prediction = model.predict(input_df)[0]
         
         # Display Columns
-        result_col1, result_col2 = st.columns(2)
+        result_col1, result_col2 = st.columns(3)
 
         with result_col1:
             st.markdown("<div class='result-card'>", unsafe_allow_html=True)
