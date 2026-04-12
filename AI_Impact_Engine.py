@@ -42,7 +42,7 @@ st.markdown("""
         width: 100%;
     }
     </style>
-    """, unsafe_allow_stdio=True)
+    """, unsafe_allow_html=True)
 
 # App Content
 st.title("🚀 AI ROI Predictor")
