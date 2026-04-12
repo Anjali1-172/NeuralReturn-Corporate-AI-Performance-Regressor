@@ -3,117 +3,103 @@ import pandas as pd
 import joblib
 import numpy as np
 
-# Load your best pipeline
+# Set page to wide mode for desktop layout
+st.set_page_config(page_title="Streamlit ROI Predictor", layout="wide")
+
+# 1. Load the model
 try:
     model = joblib.load('best_xgb_model.pkl')
 except:
-    st.error("Model file 'best_xgb_model.pkl' not found. Please ensure it is in the directory.")
+    st.error("Model file 'best_xgb_model.pkl' not found.")
 
-# Page Setup
-st.set_page_config(page_title="AI Impact Engine", layout="wide")
-
-# Custom CSS for Neon-Dashboard Hybrid
+# 2. Custom CSS to match the image (White background, centered titles, clean cards)
 st.markdown("""
     <style>
+    /* Background and global font */
     .stApp {
-        background: linear-gradient(135deg, #050505 0%, #1a0033 100%);
-        color: #00ffcc;
+        background-color: #F8F9FB;
+        color: #31333F;
     }
     
-    /* Centered Header */
-    .header-container {
+    /* Header Styling */
+    .main-header {
         text-align: center;
-        padding: 20px;
-        margin-bottom: 20px;
+        padding-top: 20px;
+        color: #1A1C1E;
+    }
+    .sub-header {
+        text-align: center;
+        color: #5E6470;
+        margin-bottom: 40px;
     }
     
-    /* Dashboard Cards */
-    .card {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 25px;
-        border-radius: 15px;
-        border: 1px solid #ff00ff;
-        box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
-        margin-bottom: 20px;
+    /* Card Styling for Results */
+    .result-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #E6E9EF;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        height: 100%;
     }
 
-    h1, h2, h3, p, label {
-        color: #00ffcc !important;
-        text-shadow: 0 0 5px rgba(0, 255, 204, 0.3);
+    /* Input section background */
+    [data-testid="stForm"] {
+        border: none;
+        background-color: transparent;
+        padding: 0;
     }
     
-    /* Button Style */
+    /* Style the Predict button */
     .stButton>button {
-        background: linear-gradient(90deg, #ff00ff, #00ffff);
-        color: white !important;
-        font-weight: bold;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
         width: 100%;
-        transition: 0.3s;
-    }
-    .stButton>button:hover {
-        box-shadow: 0 0 20px #ff00ff;
-        transform: scale(1.02);
+        background-color: #FF4B4B;
+        color: white;
+        border-radius: 5px;
+        height: 3em;
+        font-weight: bold;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- Header Section ---
-st.markdown("""
-    <div class='header-container'>
-        <h1>🚀 AI IMPACT ENGINE</h1>
-        <p>Strategic ROI Analytics & Corporate Health Diagnosis</p>
-    </div>
-    """, unsafe_allow_html=True)
+# --- HEADER ---
+st.markdown("<h1 class='main-header'>👑 Streamlit ROI Predictor</h1>", unsafe_allow_html=True)
+st.markdown("<p class='sub-header'>This app calculates your predicted ROI based on corporate AI adoption data. Input your data below to receive detailed projections and analysis.</p>", unsafe_allow_html=True)
 
-# --- Input Area (Centered Grid) ---
-col1, main_col, col3 = st.columns([1, 6, 1])
-
-with main_col:
-    with st.form("main_form"):
-        st.markdown("<div class='card'>", unsafe_allow_html=True)
-        st.subheader("📋 Company & Tool Parameters")
+# --- INPUT GRID ---
+# Organizing inputs in a 3-column grid as seen in your image
+with st.form("input_form"):
+    row1_col1, row1_col2, row1_col3 = st.columns(3)
+    
+    with row1_col1:
+        revenue = st.number_input("Annual Revenue (USD Millions)", min_value=0.0, value=100.0)
+        maturity = st.slider("AI Maturity Score (0-100)", 0, 100, 50)
+        industry = st.selectbox("Industry", ["Technology", "Finance", "Healthcare", "Retail", "Consulting"])
         
-        # Grid Layout for Inputs
-        row1_1, row1_2, row1_3 = st.columns(3)
-        with row1_1:
-            revenue = st.number_input("Annual Revenue (USD Millions)", min_value=0.0, value=100.0, step=1.0)
-            industry = st.selectbox("Industry", ["Technology", "Finance", "Healthcare", "Retail", "Consulting", "Manufacturing"])
-        with row1_2:
-            num_tools = st.number_input("Num AI Tools Used (Count)", min_value=1, value=5, step=1)
-            country = st.selectbox("Country", ["USA", "Japan", "Kenya", "Netherlands", "New Zealand", "Other"])
-        with row1_3:
-            budget = st.slider("AI Budget Percentage (%)", 0.0, 100.0, 15.0)
-            company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
+    with row1_col2:
+        num_tools = st.number_input("Num AI Tools Used (Count)", min_value=1, value=5)
+        budget = st.slider("AI Budget Percentage (%)", 0.0, 100.0, 15.0)
+        company_size = st.selectbox("Company Size", ["Enterprise", "SME", "Startup"])
 
-        row2_1, row2_2, row2_3 = st.columns(3)
-        with row2_1:
-            maturity = st.slider("AI Maturity Score (0-100)", 0, 100, 50)
-        with row2_2:
-            failure_rate = st.slider("Project Failure Rate (%)", 0.0, 100.0, 12.0)
-        with row2_3:
-            years_ai = st.number_input("Years Using AI", min_value=0.0, value=2.0, step=0.5)
+    with row1_col3:
+        years_ai = st.number_input("Years Using AI", min_value=0.0, value=2.0)
+        failure_rate = st.slider("AI Project Failure Rate (%)", 0.0, 100.0, 10.0)
+        adoption_stage = st.selectbox("AI Adoption Stage", ["full", "partial", "pilot", "none"])
 
-        # Advanced/hidden inputs included to match model requirements
-        with st.expander("Show Advanced Strategy Inputs"):
-            adv1, adv2, adv3 = st.columns(3)
-            with adv1:
-                adoption_stage = st.selectbox("Adoption Stage", ["none", "pilot", "partial", "full"], index=2)
-            with adv2:
-                adoption_rate = st.slider("Internal Adoption Rate (%)", 0, 100, 45)
-            with adv3:
-                inv_per_emp = st.number_input("AI Investment Per Employee (USD)", value=1500)
-                primary_tool = st.text_input("Primary AI Tool", "ChatGPT")
-                active_projects = st.number_input("Active AI Projects", value=3)
+    # Hidden fields needed for your specific model logic
+    with st.expander("Additional Parameters"):
+        c1, c2, c3 = st.columns(3)
+        country = c1.text_input("Country", "USA")
+        adoption_rate = c2.slider("AI Adoption Rate (%)", 0, 100, 40)
+        inv_per_emp = c3.number_input("AI Investment Per Employee (USD)", value=1000)
+        primary_tool = "ChatGPT" 
+        active_projects = 3
 
-        submit = st.form_submit_button("GENERATE DETAILED PROJECTION")
-        st.markdown("</div>", unsafe_allow_html=True)
+    predict_pressed = st.form_submit_button("Generate Prediction & Analysis")
 
-# --- Analysis & Result Section ---
-if submit:
-    # 1. Create Dataframe for Prediction
+# --- RESULTS SECTION ---
+if predict_pressed:
+    # Prepare DataFrame for model
     input_df = pd.DataFrame([{
         "industry": industry, "country": country, "company_size": company_size,
         "annual_revenue_usd_millions": revenue, "ai_adoption_rate": adoption_rate,
@@ -124,62 +110,51 @@ if submit:
         "ai_investment_per_employee": inv_per_emp
     }])
 
-    try:
-        # 2. Prediction
-        prediction = model.predict(input_df)[0]
+    # Get Prediction
+    prediction_raw = model.predict(input_df)[0]
+    
+    # Visual Layout for Results (2 Columns)
+    res_col1, res_col2 = st.columns(2)
+
+    with res_col1:
+        st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+        st.subheader("Calculated ROI Projection")
+        st.markdown(f"### Predicted Corporate ROI: **{prediction_raw:.2%}**")
+        st.caption("(Total Return on Investment as a percentage of total costs)")
         
-        st.markdown("---")
-        res_left, res_right = st.columns(2)
+        # Derived Metrics
+        costs = revenue * (budget / 100)
+        gain = costs * (1 + prediction_raw)
+        
+        st.write(f"**Projected Financial Gain:** ${gain:.2f} Millions")
+        st.write(f"**Projected Total Costs:** ${costs:.2f} Millions")
+        st.write(f"**Final Net ROI:** {prediction_raw*100:.2f}%")
+        st.markdown("</div>", unsafe_allow_html=True)
 
-        # LEFT COLUMN: ROI Metrics
-        with res_left:
-            st.markdown("<div class='card'>", unsafe_allow_html=True)
-            st.subheader("📈 Financial ROI Projection")
+    with res_col2:
+        st.markdown("<div class='result-card'>", unsafe_allow_html=True)
+        st.subheader("Company Data Insights & Health Check")
+        
+        # Maturity Chart
+        st.write("📊 **Your Company Maturity vs Industry Average**")
+        chart_data = pd.DataFrame({
+            'Category': ['Your Company', 'Industry Avg'],
+            'Score': [maturity, 55] # 55 is a static baseline for comparison
+        })
+        st.bar_chart(chart_data.set_index('Category'))
+        
+        st.write("➕ **Company Condition**")
+        # Logic for health status
+        if failure_rate > 20:
+            st.error("Budget Health: High Risk (Project fail rate is too high)")
+        else:
+            st.success("Budget Health: Stable")
             
-            # Display result as a large metric
-            st.metric(label="Predicted Net ROI", value=f"{prediction:.2%}")
-            st.caption("Unit: Total Return on Investment as a % of total AI costs")
-            
-            # Calculation based on inputs
-            est_cost = (revenue * (budget/100))
-            est_gain = est_cost * (1 + prediction)
-            
-            st.write(f"**Est. Operational Cost:** ${est_cost:.2f}M")
-            st.write(f"**Est. Value Created:** ${est_gain:.2f}M")
-            st.markdown("</div>", unsafe_allow_html=True)
-
-        # RIGHT COLUMN: Company Condition Analysis
-        with res_right:
-            st.markdown("<div class='card'>", unsafe_allow_html=True)
-            st.subheader("🏥 Company Health Check")
-            
-            # Chart Comparison
-            chart_data = pd.DataFrame({
-                "Score": [maturity, 55], # 55 is a dummy industry average
-                "Entity": ["Your Company", "Industry Avg"]
-            })
-            st.bar_chart(chart_data.set_index("Entity"))
-            
-            # Analysis Logic
-            if maturity < 40:
-                st.warning("⚠️ **Condition:** Emerging AI User. Your infrastructure needs foundational strengthening.")
-            else:
-                st.success("✅ **Condition:** Mature AI User. You are well-positioned for scaling.")
-
-            if failure_rate > 20:
-                st.error("❌ **Budget Risk:** High Failure Rate detected. Check project management protocols.")
-            elif budget < 5:
-                st.info("💡 **Opportunity:** Your budget is low relative to revenue. Increasing spend could accelerate ROI.")
-            else:
-                st.write("💎 **Budget Health:** Resource allocation is optimized.")
-                
-            st.markdown("</div>", unsafe_allow_html=True)
-            
-        st.balloons()
-
-    except Exception as e:
-        st.error(f"Prediction Error: {e}")
-
+        if maturity < 40:
+            st.warning("Maturity Status: Emerging AI User (Needs foundation)")
+        else:
+            st.info("Maturity Status: Established AI User")
+        st.markdown("</div>", unsafe_allow_html=True)
 
 ''''
 import streamlit as st
