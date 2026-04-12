@@ -16,35 +16,32 @@ except Exception as e:
 # 2. Custom CSS for the White-Labeled Dashboard look
 st.markdown("""
     <style>
-    .stApp { 
-        background-color: #F8F9FB; 
-        color: #31333F; 
-    }
-    .main-header { 
-        text-align: center; 
-        padding-top: 20px; 
-        color: #1A1C1E; 
-        font-weight: bold; 
-    }
-    .sub-header { 
-        text-align: center; 
-        color: #5E6470; 
-        margin-bottom: 40px; 
-    }
+    .stApp { background-color: #F8F9FB; color: #31333F; }
+    .main-header { text-align: center; padding-top: 20px; color: #1A1C1E; font-weight: bold; }
+    .sub-header { text-align: center; color: #5E6470; margin-bottom: 40px; }
+    
     .result-card {
         background-color: white;
-        padding: 25px;
+        padding: 20px;
         border-radius: 12px;
         border: 1px solid #E6E9EF;
         box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        height: 100%;
         margin-bottom: 20px;
     }
-    div[data-testid="stForm"] { 
-        border: none; 
-        background: transparent; 
-        padding: 0; 
+
+    /* FORCING DESKTOP LOOK ON MOBILE */
+    @media (max-width: 768px) {
+        /* This prevents the 2-column results from stacking into 1 column */
+        [data-testid="stHorizontalBlock"] {
+            flex-direction: row !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+        }
+        [data-testid="column"] {
+            min-width: 45% !important; /* Forces two columns to sit side-by-side */
+        }
     }
+
     .stButton>button {
         width: 100%;
         background-color: #FF4B4B;
@@ -56,7 +53,6 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
-
 # --- HEADER ---
 st.markdown("<h1 class='main-header'>👑 Streamlit ROI Predictor</h1>", unsafe_allow_html=True)
 st.markdown("<p class='sub-header'>Clean dashboard for corporate AI adoption ROI analysis.</p>", unsafe_allow_html=True)
