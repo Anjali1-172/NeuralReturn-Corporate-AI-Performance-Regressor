@@ -75,7 +75,6 @@ with st.form("roi_form"):
 
     with col1:
         industry = st.selectbox("Industry", ["Technology", "Finance", "Healthcare", "Retail", "Consulting"])
-        country = st.selectbox("Country", ["USA", "UK", "Germany", "Canada", "India"])
         company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
         revenue = st.number_input("Annual Revenue (USD Millions)", value=150.0)
         inv_per_emp = st.number_input("AI Investment Per Employee", value=1200)
@@ -100,7 +99,6 @@ if predict_btn:
 
     input_data = pd.DataFrame([{
         "industry": industry,
-        "country": country,
         "company_size": company_size,
         "annual_revenue_usd_millions": revenue,
         "ai_adoption_rate": adoption_rate,
