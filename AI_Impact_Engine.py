@@ -82,6 +82,7 @@ with st.form("roi_form"):
         company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
         revenue = st.number_input("Annual Revenue (USD Millions)", value=150.0)
         inv_per_emp = st.number_input("AI Investment per Employee", value=1200.0)
+        failure_rate = st.slider("Failure Rate (%)", 0.0, 100.0, 15.0)
         
 
     with col2:
@@ -89,7 +90,6 @@ with st.form("roi_form"):
         adoption_stage = st.selectbox("AI Adoption Stage", ["none", "pilot", "partial", "full"])
         years_ai = st.number_input("Years Using AI", value=3.0)
         maturity = st.slider("AI Maturity Score", 0, 100, 60)
-        failure_rate = st.slider("Failure Rate (%)", 0.0, 100.0, 15.0)
 
     with col3:
         primary_tool = st.selectbox("AI Tool", ["ChatGPT", "Claude", "Gemini", "Custom"])
