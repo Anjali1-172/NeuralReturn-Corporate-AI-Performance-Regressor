@@ -78,7 +78,8 @@ with st.form("roi_form"):
         industry = st.selectbox("Industry", ["Technology", "Finance", "Healthcare", "Retail", "Consulting"])
         company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
         revenue = st.number_input("Annual Revenue (USD Millions)", value=150.0)
-        inv_per_emp = st.number_input("AI Investment Per Employee", value=1200)
+        industry_grouped = st.selectbox("Industry", ["Healthcare", "Finance", "Technology","Manufacturing","Retail","Other"])
+        uses_advanced_ai_tool = 1 if ai_primary_tool in ["Custom Internal AI", "Claude", "Gemini"] else 0
 
     with col2:
         adoption_rate = st.slider("AI Adoption Rate (%)", 0, 100, 45)
