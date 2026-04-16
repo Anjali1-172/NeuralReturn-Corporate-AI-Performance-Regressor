@@ -78,6 +78,7 @@ with st.form("roi_form"):
         industry = st.selectbox("Industry", ["Technology", "Finance", "Healthcare", "Retail", "Consulting"])
         company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
         revenue = st.number_input("Annual Revenue (USD Millions)", value=150.0)
+        industry_grouped = st.selectbox("Industry", ["Healthcare", "Finance", "Technology","Manufacturing","Retail","Other"])
 
     with col2:
         adoption_rate = st.slider("AI Adoption Rate (%)", 0, 100, 45)
