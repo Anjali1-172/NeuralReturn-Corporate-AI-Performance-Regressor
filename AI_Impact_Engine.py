@@ -45,7 +45,6 @@ def engineering_logic(X):
 # =========================
 # LOAD MODEL
 # =========================
-st.write("Loading model...")
 pipeline = joblib.load("best_xgb_model.pkl")
 st.success("Model loaded ✅")
 
