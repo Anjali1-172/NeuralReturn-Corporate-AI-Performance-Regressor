@@ -75,10 +75,11 @@ with st.form("roi_form"):
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        industry = st.selectbox("Industry", ["Technology", "Finance", "Healthcare", "Retail", "Consulting"])
+        industry = st.selectbox("Industry", ["Healthcare", "Finance", "Technology","Manufacturing","Retail","Other"])
         company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
         revenue = st.number_input("Annual Revenue (USD Millions)", value=150.0)
-        industry_grouped = st.selectbox("Industry", ["Healthcare", "Finance", "Technology","Manufacturing","Retail","Other"])
+        inv_per_emp = st.number_input("AI Investment per Employee", value=1200.0)
+        
 
     with col2:
         adoption_rate = st.slider("AI Adoption Rate (%)", 0, 100, 45)
@@ -99,7 +100,7 @@ with st.form("roi_form"):
 if predict_btn:
 
     input_data = pd.DataFrame([{
-        "industry": industry,
+        "industry_grouped": industry,
         "company_size": company_size,
         "annual_revenue_usd_millions": revenue,
         "ai_adoption_rate": adoption_rate,
@@ -119,6 +120,8 @@ if predict_btn:
         if pipeline is None:
             st.error("Model not loaded. Cannot predict.")
         else:
+            input_data["uses_advanced_ai_tool"] = input_data["ai_primary_tool"].apply(
+                lambda x: 1 if x in ["Custom Internal AI", "Claude", "Gemini"] else 0)
             roi_prediction = pipeline.predict(input_data)[0]
 
         col1, col2 = st.columns(2)
