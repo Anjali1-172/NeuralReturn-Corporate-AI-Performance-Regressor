@@ -6,6 +6,29 @@ import numpy as np
 # Page config
 st.set_page_config(page_title="ROI Predictor", layout="wide")
 
+# When using custom transformers inside a pipeline,
+# they must be available in the runtime environment during inference, otherwise deserialization fails.
+def engineering_logic(X):
+    # working on a copy to avoid SettingWithCopy warnings
+    X = X.copy()
+    
+    # Division by zero protection (+ 1)
+    X['budget_per_project'] = X['ai_budget_percentage'] / (X['ai_projects_active'] + 1)
+    X['investment_per_tool'] = X['ai_investment_per_employee'] / (X['num_ai_tools_used'] + 1)
+    
+    X['success_rate'] = 1 - X['ai_failure_rate']
+    X['effective_budget'] = X['ai_budget_percentage'] * X['success_rate']
+    
+    X['maturity_x_adoption'] = X['ai_maturity_score'] * X['ai_adoption_rate']
+    X['experience_factor'] = X['years_using_ai'] * X['ai_maturity_score']
+    
+    X['projects_per_tool'] = X['ai_projects_active'] / (X['num_ai_tools_used'] + 1)
+    X['revenue_per_ai_investment'] = X['annual_revenue_usd_millions'] / (X['ai_investment_per_employee'] + 1)
+
+    X = X.drop(columns =["ai_budget_percentage","num_ai_tools_used","ai_projects_active","ai_investment_per_employee"])
+    
+    return X
+
 # Load PIPELINE (not just model)
 try:
     # Ensure this file is in the same folder as this script
