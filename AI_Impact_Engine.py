@@ -101,22 +101,21 @@ with st.form("roi_form"):
 
 # --- PREDICTION ---
 if predict_btn:
-
-input_data = pd.DataFrame([{
-    'company_size': company_size,
-    'annual_revenue_usd_millions': revenue,
-    'ai_adoption_rate': adoption_rate / 100,   # IMPORTANT
-    'ai_adoption_stage': adoption_stage,
-    'years_using_ai': years_ai,
-    'ai_maturity_score': maturity,
-    'num_ai_tools_used': num_tools,
-    'ai_projects_active': active_projects,
-    'ai_budget_percentage': budget,
-    'ai_failure_rate': failure_rate / 100,     # IMPORTANT
-    'ai_investment_per_employee': inv_per_emp,
-    'industry_grouped': industry,
-    'ai_primary_tool': primary_tool
-}])
+    input_data = pd.DataFrame([{
+        'company_size': company_size,
+        'annual_revenue_usd_millions': revenue,
+        'ai_adoption_rate': adoption_rate / 100,   # IMPORTANT
+        'ai_adoption_stage': adoption_stage,
+        'years_using_ai': years_ai,
+        'ai_maturity_score': maturity,
+        'num_ai_tools_used': num_tools,
+        'ai_projects_active': active_projects,
+        'ai_budget_percentage': budget,
+        'ai_failure_rate': failure_rate / 100,     # IMPORTANT
+        'ai_investment_per_employee': inv_per_emp,
+        'industry_grouped': industry,
+        'ai_primary_tool': primary_tool
+    }])
 
     try:
         # ✅ Use pipeline (handles encoding automatically)
