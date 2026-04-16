@@ -9,7 +9,7 @@ st.set_page_config(page_title="ROI Predictor", layout="wide")
 # Load PIPELINE (not just model)
 try:
     # Ensure this file is in the same folder as this script
-    model = joblib.load('best_xgb_model.pkl')
+    pipeline = joblib.load('best_xgb_model.pkl')
 except Exception as e:
     st.error(f"Error loading model: {e}")
 
