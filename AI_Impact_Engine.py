@@ -31,13 +31,14 @@ def engineering_logic(X):
 
 # Load PIPELINE (not just model)
 st.write("Loading model...")
+
 pipeline = None
+
 try:
     pipeline = joblib.load("best_xgb_model.pkl")
-    st.success("Model loaded successfully")
+    st.success("Model loaded successfully ✅")
 except Exception as e:
     st.error(f"Model loading failed: {e}")
-    pipeline = None
 
 # --- STYLES ---
 st.markdown("""
@@ -115,7 +116,10 @@ if predict_btn:
 
     try:
         # ✅ Use pipeline (handles encoding automatically)
-        roi_prediction = pipeline.predict(input_data)[0]
+        if pipeline is None:
+            st.error("Model not loaded. Cannot predict.")
+        else:
+            roi_prediction = pipeline.predict(input_data)[0]
 
         col1, col2 = st.columns(2)
 
