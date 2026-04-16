@@ -9,6 +9,9 @@ st.set_page_config(page_title="ROI Predictor", layout="wide")
 # When using custom transformers inside a pipeline,
 # they must be available in the runtime environment during inference, otherwise deserialization fails.
 def engineering_logic(X):
+    X['uses_advanced_ai_tool'] = X['ai_primary_tool'].apply(
+        lambda x: 1 if x in ['Custom Internal AI', 'Claude', 'Gemini'] else 0
+    )
     # working on a copy to avoid SettingWithCopy warnings
     X = X.copy()
     
@@ -99,29 +102,27 @@ with st.form("roi_form"):
 # --- PREDICTION ---
 if predict_btn:
 
-    input_data = pd.DataFrame([{
-        "industry_grouped": industry,
-        "company_size": company_size,
-        "annual_revenue_usd_millions": revenue,
-        "ai_adoption_rate": adoption_rate,
-        "ai_adoption_stage": adoption_stage,
-        "years_using_ai": years_ai,
-        "ai_maturity_score": maturity,
-        "ai_primary_tool": primary_tool,
-        "num_ai_tools_used": num_tools,
-        "ai_projects_active": active_projects,
-        "ai_budget_percentage": budget,
-        "ai_failure_rate": failure_rate,
-        "ai_investment_per_employee": inv_per_emp
-    }])
+input_data = pd.DataFrame([{
+    'company_size': company_size,
+    'annual_revenue_usd_millions': revenue,
+    'ai_adoption_rate': adoption_rate / 100,   # IMPORTANT
+    'ai_adoption_stage': adoption_stage,
+    'years_using_ai': years_ai,
+    'ai_maturity_score': maturity,
+    'num_ai_tools_used': num_tools,
+    'ai_projects_active': active_projects,
+    'ai_budget_percentage': budget,
+    'ai_failure_rate': failure_rate / 100,     # IMPORTANT
+    'ai_investment_per_employee': inv_per_emp,
+    'industry_grouped': industry,
+    'ai_primary_tool': primary_tool
+}])
 
     try:
         # ✅ Use pipeline (handles encoding automatically)
         if pipeline is None:
             st.error("Model not loaded. Cannot predict.")
         else:
-            input_data["uses_advanced_ai_tool"] = input_data["ai_primary_tool"].apply(
-                lambda x: 1 if x in ["Custom Internal AI", "Claude", "Gemini"] else 0)
             roi_prediction = pipeline.predict(input_data)[0]
 
         col1, col2 = st.columns(2)
