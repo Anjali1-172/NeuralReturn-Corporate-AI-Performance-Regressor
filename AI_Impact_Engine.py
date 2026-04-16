@@ -30,17 +30,15 @@ def engineering_logic(X):
     return X
 
 # Load PIPELINE (not just model)
-def load_model():
-    try:
-        return joblib.load('best_xgb_model.pkl')
-    except Exception as e:
-        st.error(f"Model load failed: {e}")
-        return None
+st.write("Loading model...")
+pipeline = None
+try:
+    pipeline = joblib.load("best_xgb_model.pkl")
+    st.success("Model loaded successfully")
+except Exception as e:
+    st.error(f"Model loading failed: {e}")
+    pipeline = None
 
-pipeline = load_model()
-
-if pipeline is None:
-    st.stop()
 # --- STYLES ---
 st.markdown("""
 <style>
