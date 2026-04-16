@@ -64,6 +64,8 @@ with st.form("form"):
         industry = st.selectbox("Industry", ["Healthcare", "Finance", "Technology","Manufacturing","Retail","Other"])
         company_size = st.selectbox("Company Size", ["Startup", "SME", "Enterprise"])
         revenue = st.number_input("Revenue (M USD)", 50.0)
+        inv_emp = st.number_input("AI Investment per Employee", 1200.0)
+        tool = st.selectbox("AI Tool", ["ChatGPT", "Claude", "Gemini", "Custom Internal AI"])
 
     with col2:
         adoption_rate = st.slider("AI Adoption Rate", 0.0, 1.0, 0.5)
@@ -72,13 +74,11 @@ with st.form("form"):
         maturity = st.slider("Maturity Score", 0, 100, 60)
 
     with col3:
-        tool = st.selectbox("AI Tool", ["ChatGPT", "Claude", "Gemini", "Custom Internal AI"])
         num_tools = st.number_input("AI Tools", 1)
         projects = st.number_input("Projects", 5)
         budget = st.slider("Budget %", 0.0, 100.0, 15.0)
         failure = st.slider("Failure Rate", 0.0, 1.0, 0.2)
 
-    inv_emp = st.number_input("AI Investment per Employee", 1200.0)
 
     btn = st.form_submit_button("Predict ROI")
 
